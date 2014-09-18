@@ -24,6 +24,7 @@ public class WorldWithoutThief implements World {
   }
 
   public void initialize() {
+
   }
 
   public boolean hasThief() {
