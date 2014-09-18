@@ -15,7 +15,7 @@ public class QAgent implements Agent {
   }
 
   private double bestUtility(int state) {
-    double maxQValue = Double.MIN_VALUE;
+    double maxQValue = -1.0;
     for(double aQValue : qValue[state]){
         if(aQValue > maxQValue)
             maxQValue = aQValue;
@@ -27,7 +27,7 @@ public class QAgent implements Agent {
     double prob = Math.random();
     if(prob - epsilon < 0.001){
         //Need to implement once TA responds
-        double maxQValue = Double.MIN_VALUE;
+        double maxQValue = -1.0;
         int maxQValueIndex = -1;
         double[] actionsForThisState = qValue[state];
         int i = 0;
@@ -59,7 +59,7 @@ public class QAgent implements Agent {
 
   public int bestAction(double[] qValueForState){
       int bestAction = -1;
-      double maxQValue = Double.MIN_VALUE;
+      double maxQValue = -1.0;
       int i =0;
       for(double aQValue : qValueForState){
           if(aQValue > maxQValue){
