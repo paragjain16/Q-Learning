@@ -15,32 +15,36 @@ public class QLearningAgent implements Agent {
   }
 
   private double bestUtility(int state) {
-    double maxQValue = -1.0;
+    double maxQValue = Double.NEGATIVE_INFINITY;
     for(double aQValue : qValue[state]){
-        if(aQValue > maxQValue)
+        if(Double.compare(aQValue, maxQValue) > 0)
             maxQValue = aQValue;
     }
     return maxQValue;
   }
 
   public int chooseAction(int state) {
-    double prob = Math.random();
-    if(prob - epsilon < 0.001){
-        //Need to implement once TA responds
-        double maxQValue = -1.0;
-        int maxQValueIndex = -1;
+    double prob = rand.nextDouble();
+    ArrayList<Integer> actionsWithMaxQValue = new ArrayList<Integer>();
+    // Choose random action with epsilon probability
+    if(prob < epsilon){
+        return rand.nextInt(this.numOfActions);
+    }else{ //Be greedy with (1-epsilon) probability
+        double maxQValue = Double.NEGATIVE_INFINITY;
         double[] actionsForThisState = qValue[state];
-        int i = 0;
         for(double aQValue : actionsForThisState){
             if(aQValue > maxQValue){
-               maxQValueIndex = i;
-               maxQValue = aQValue;
+                maxQValue = aQValue;
+            }
+        }
+        int i = 0;
+        for(double aQValue : actionsForThisState){
+            if(Double.compare(aQValue, maxQValue) == 0){
+                actionsWithMaxQValue.add(i);
             }
             i++;
         }
-        return maxQValueIndex;
-    }else{
-        return rand.nextInt(this.numOfActions);
+        return actionsWithMaxQValue.get(rand.nextInt(actionsWithMaxQValue.size()));
     }
   }
 
@@ -59,10 +63,10 @@ public class QLearningAgent implements Agent {
 
   private int bestAction(double[] qValueForState){
       int bestAction = -1;
-      double maxQValue = -1.0;
-      int i =0;
+      double maxQValue = Double.NEGATIVE_INFINITY;
+      int i = 0;
       for(double aQValue : qValueForState){
-          if(aQValue > maxQValue){
+          if(Double.compare(aQValue, maxQValue) > 0){
               bestAction = i;
               maxQValue = aQValue;
           }
@@ -72,7 +76,7 @@ public class QLearningAgent implements Agent {
   }
   private static final double discount = 0.9;
   private static final double rate = 0.1;
-  private static final double epsilon = 0.00;
+  private static final double epsilon = 0.1;
 
   private int numOfStates;
   private int numOfActions;
